@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juntos Podemos · Puerto Piray</title>
+    <meta name="description" content="Propuestas, proyectos y transparencia para Puerto Piray. Somos un espacio vecinal que trabaja por la salud, seguridad, empleo y obras para todos los barrios.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+        .text-juntos { color: #e53935; }
+        .bg-juntos { background-color: #e53935; }
+
+        /* Reemplazo de @apply por CSS puro (funciona con CDN) */
+        .btn-juntos{
+            background:#fff; color:#e53935; padding:0.5rem 1.5rem; border-radius:9999px;
+            font-weight:500; transition:background-color .3s;
+        }
+        .btn-juntos:hover{ background:#e5e7eb; }
+        .btn-juntos:focus, .cta-btn-juntos:focus{
+            outline:2px solid #c0302b; outline-offset:2px;
+        }
+        .cta-btn-juntos{
+            background:#e53935; color:#fff; padding:0.75rem 2rem; border-radius:9999px;
+            font-weight:700; transition:background-color .3s; display:inline-flex; align-items:center; justify-content:center;
+        }
+        .cta-btn-juntos:hover{ background:#c0302b; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; transition: opacity 0.3s ease-in-out;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background-color: white; padding: 2rem; border-radius: 0.75rem;
+            max-width: 90%; max-height: 90vh; overflow-y: auto; position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: translateY(20px);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+            font-size: 1.5rem; font-weight: bold; cursor: pointer; color: #555; transition: color 0.2s;
+        }
+        .modal-close:hover { color: #e53935; }
+
+        /* Carousel Styles */
+        .carousel-container { position: relative; width: 100%; overflow: hidden; border-radius: 0.75rem; }
+        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+        .carousel-slide { min-width: 100%; }
+        .carousel-slide img { width: 100%; height: auto; object-fit: cover; }
+        .carousel-button {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5); color: white; border: none; cursor: pointer;
+            padding: 1rem; z-index: 10; border-radius: 9999px;
+        }
+        .carousel-button-left { left: 1rem; }
+        .carousel-button-right { right: 1rem; }
+
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            display: none; position: absolute; top: 100%; left: 0; background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 0.5rem; padding: 0.5rem 0; z-index: 20; min-width: 150px;
+        }
+        .dropdown-menu a { display: block; padding: 0.75rem 1rem; color: #2c3e50; transition: background-color 0.2s; }
+        .dropdown-menu a:hover { background-color: #f1f1f1; }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Top Navigation Header -->
+<nav class="bg-juntos text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo and Party Name -->
+        <a href="#home" class="flex items-center space-x-2">
+            <img src="img/logo-juntos-podemos.png" alt="Logo de Juntos Podemos" class="w-10 h-10 rounded-full">
+            <span class="text-xl font-bold">Juntos Podemos</span>
+        </a>
+        <!-- Logo Frente Renovador de la Concordia -->
+        <a href="enlace-frente-renovador" class="ml-4 flex items-center">
+            <img src="img/frente-renovador-logo.jpg" alt="Logo del Frente Renovador de la Concordia" class="w-10 h-10 rounded-full">
+        </a>
+
+        <!-- Hamburger Menu Button -->
+        <div class="relative">
+            <button id="menu-button" class="md:hidden text-white focus:outline-none" aria-expanded="false" aria-controls="menu-dropdown" aria-label="Abrir menú">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="menu-dropdown" class="dropdown-menu" role="menu">
+                <a href="#propuestas" role="menuitem">Propuestas</a>
+                <a href="#candidatos" role="menuitem">Equipo</a>
+                <a href="#proyectos" role="menuitem">Proyectos</a>
+                <a href="#comunidad" role="menuitem">Junto a los Vecinos</a>
+                <a href="#transparencia" role="menuitem">Transparencia</a>
+                <a href="#novedades" role="menuitem">Novedades</a>
+                <a href="#sumate" role="menuitem">¡Sumate!</a>
+                <a href="#contacto" role="menuitem">Contacto</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Header Section -->
+<header id="home" class="bg-juntos text-white py-16 md:py-24 text-center">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
+            Juntos por un <br class="md:hidden">Puerto Piray más seguro, con mejor salud, <br class="md:hidden">trabajo y obras para cada barrio.
+        </h1>
+        <p class="text-lg sm:text-xl max-w-2xl mx-auto mb-6">
+            En Juntos Podemos, somos vecinos como vos. Creemos en la transparencia y en el trabajo diario, ese que se ve y se siente en cada rincón de Piray. Desde el centro hasta el KM 18, nuestro compromiso es simple: acercar soluciones reales a las necesidades de la gente. Te invitamos a conocer nuestras propuestas, seguir nuestros proyectos y sumarte a la acción.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="#propuestas" class="cta-btn-juntos">Ver Propuestas</a>
+            <a href="#transparencia" class="cta-btn-juntos">Transparencia 1 clic</a>
+            <a href="#sumate" class="cta-btn-juntos">¡Sumate!</a>
+        </div>
+        <!-- Image for Hero Section -->
+        <img src="img/imagen-principal.jpg" alt="Juntos Podemos Puerto Piray" class="w-full max-w-4xl mx-auto rounded-lg shadow-xl mt-8">
+    </div>
+</header>
+
+<main class="py-12">
+    <!-- Mini Franja -->
+    <section class="bg-gray-200 text-gray-700 py-4 text-center text-sm font-medium">
+        <div class="container mx-auto px-4">
+            Balance 2024 disponible &bull; Proyectos aprobados &bull; Agenda comunitaria
+        </div>
+    </section>
+
+    <!-- Propuestas Section -->
+    <section id="propuestas" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">Nuestras Propuestas</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+                Conocé nuestras ideas para cada área clave de Puerto Piray. Hacé clic para ver todos los detalles de cada propuesta.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Salud Card -->
+                <a href="#salud-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-heartbeat mr-2"></i>Salud</h3>
+                    <p class="text-gray-600">
+                        Nos enfocamos en una salud cercana, accesible y preventiva. Queremos que el acceso a la atención no sea un problema para ninguna familia de Piray.
+                    </p>
+                </a>
+                
+                <!-- Seguridad Card -->
+                <a href="#seguridad-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-shield-alt mr-2"></i>Seguridad</h3>
+                    <p class="text-gray-600">
+                        Sabemos que la tranquilidad de nuestras familias es fundamental. Por eso, trabajamos para prevenir y fortalecer los sistemas de seguridad.
+                    </p>
+                </a>
+
+                <!-- Trabajo Card -->
+                <a href="#trabajo-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-briefcase mr-2"></i>Trabajo y Empleo</h3>
+                    <p class="text-gray-600">
+                        El trabajo digno es nuestro gran desafío. Por eso, generamos propuestas para crear oportunidades reales y genuinas para nuestros vecinos.
+                    </p>
+                </a>
+                
+                <!-- Obras Card -->
+                <a href="#obras-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-tools mr-2"></i>Obras y Servicios</h3>
+                    <p class="text-gray-600">
+                        El progreso se ve en las calles, en la iluminación, en los servicios básicos. Nuestro plan de obras busca mejorar la calidad de vida de cada vecino.
+                    </p>
+                </a>
+
+                 <!-- Producción y Medio Ambiente Card -->
+                <a href="#produccion-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-tree mr-2"></i>Producción y Medio Ambiente</h3>
+                    <p class="text-gray-600">
+                        Impulsamos el desarrollo local y el cuidado de nuestro entorno. Queremos que nuestros productores y emprendedores crezcan.
+                    </p>
+                </a>
+
+                <!-- Acción Social Card -->
+                <a href="#social-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-hand-holding-heart mr-2"></i>Acción Social</h3>
+                    <p class="text-gray-600">
+                        Nuestro compromiso es estar cerca de quienes más lo necesitan. Organizamos el área para dar una asistencia permanente y de calidad.
+                    </p>
+                </a>
+                
+                <!-- Deportes Card -->
+                <a href="#deportes-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-futbol mr-2"></i>Deportes</h3>
+                    <p class="text-gray-600">
+                        Creemos que el deporte es un pilar de la comunidad. Queremos que los clubes y polideportivos sean espacios de encuentro y contención.
+                    </p>
+                </a>
+
+                 <!-- Juventud Card -->
+                <a href="#juventud-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-user-graduate mr-2"></i>Juventud</h3>
+                    <p class="text-gray-600">
+                        Los jóvenes son el futuro de Piray. Queremos darles las herramientas y los espacios para que se desarrollen y formen.
+                    </p>
+                </a>
+                 <!-- KM 18 Card -->
+                <a href="#km18-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-map-marked-alt mr-2"></i>KM 18</h3>
+                    <p class="text-gray-600">
+                        El KM 18 es parte de nuestra identidad. Conocemos las necesidades de los vecinos y tenemos propuestas concretas.
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Proposals Section - Hidden Content for Modal -->
+    <div class="hidden-proposals-details" style="display:none;">
+        <!-- Salud Details -->
+        <div id="salud-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-salud"><i class="fas fa-heartbeat mr-2"></i>Salud</h3>
+            <p class="text-gray-600 mb-4">Nos enfocamos en una salud cercana, accesible y preventiva. Queremos que el acceso a la atención no sea un problema para ninguna familia de Piray. Por eso, nuestras propuestas apuntan a fortalecer los servicios existentes y llevar la salud directamente a los barrios.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Gestión de capital humano para el hospital:</strong> médicos especialistas.</li>
+                <li><strong>Gestión de nuevas y modernas ambulancias.</strong></li>
+                <li><strong>Promover un sistema de turnos de fácil acceso a los pacientes.</strong></li>
+                <li><strong>Independencia funcional y operativa del Hospital.</strong></li>
+                <li><strong>Conectividad para los C.A.P.S y el hospital.</strong></li>
+                <li><strong>Atención primaria de la salud y medicina preventiva en los barrios.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Seguridad Details -->
+        <div id="seguridad-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-seguridad"><i class="fas fa-shield-alt mr-2"></i>Seguridad</h3>
+            <p class="text-gray-600 mb-4">Sabemos que la tranquilidad de nuestras familias es fundamental. Por eso, trabajamos para prevenir y fortalecer los sistemas de seguridad, con participación vecinal y recursos para los que nos cuidan.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Gestión de la comisaria de la mujer.</strong></li>
+                <li><strong>Mejora y ampliación del sistema, cámaras y monitoreo constante.</strong></li>
+                <li><strong>Creación del Foro de seguridad vecinal.</strong></li>
+                <li><strong>Fortalecimiento al cuerpo de bomberos voluntarios de Puerto Piray.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Trabajo y Empleo Details -->
+        <div id="trabajo-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-trabajo"><i class="fas fa-briefcase mr-2"></i>Trabajo y Empleo</h3>
+            <p class="text-gray-600 mb-4">El trabajo digno es nuestro gran desafío. Por eso, generamos propuestas para crear oportunidades reales y genuinas para nuestros vecinos.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Inclusión y articulación laboral</strong> a través de la generación de fuentes de trabajo genuinas.</li>
+                <li><strong>Crear una bolsa de empleo.</strong></li>
+                <li><strong>Facilitar la inversión privada</strong> con contratación directa de compueblanos.</li>
+                <li><strong>Fomento a la creación de cooperativas.</strong></li>
+                <li><strong>Apoyo a microemprendimientos y Pymes</strong> con subsidios y créditos.</li>
+                <li><strong>Rediseñar parque industrial.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Obras y Servicios Details -->
+        <div id="obras-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-obras"><i class="fas fa-tools mr-2"></i>Obras y Servicios Públicos</h3>
+            <p class="text-gray-600 mb-4">El progreso se ve en las calles, en la iluminación, en los servicios básicos. Nuestro plan de obras busca mejorar la calidad de vida de cada vecino de Piray, desde el mantenimiento diario hasta los grandes proyectos.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Regularización dominial de las tierras.</strong></li>
+                <li><strong>Puesta en valor de plazas y espacios verdes.</strong></li>
+                <li><strong>Optimización de recolección de residuos.</strong></li>
+                <li><strong>Tratamiento de residuos sólidos urbanos.</strong></li>
+                <li><strong>Reacondicionamiento de la costanera.</strong></li>
+                <li><strong>Mejora y mantenimiento de calles, cordones y veredas.</strong></li>
+                <li><strong>Más luminarias para la comunidad.</strong></li>
+                <li><strong>Acceso más rápido a energía eléctrica.</strong></li>
+                <li><strong>Señalización y ordenamiento territorial y vial.</strong></li>
+                <li><strong>Puesto en valor de salones comunitarios.</strong></li>
+                <li><strong>Nuevo edificio para el HCD.</strong></li>
+                <li><strong>Paradas de colectivos.</strong></li>
+                <li><strong>Nuevo corralón municipal.</strong></li>
+                <li><strong>Hogar de Día.</strong></li>
+                <li><strong>Plan de viviendas y urbanización.</strong></li>
+                <li><strong>Activación de la Terminal de ómnibus.</strong></li>
+                <li><strong>Mantenimiento del cementerio.</strong></li>
+                <li><strong>Extensión de la red de agua.</strong></li>
+                <li><strong>Extensión del tendido eléctrico.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Producción y Medio Ambiente Details -->
+        <div id="produccion-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-produccion"><i class="fas fa-tree mr-2"></i>Producción y Medio Ambiente</h3>
+            <p class="text-gray-600 mb-4">Impulsamos el desarrollo local y el cuidado de nuestro entorno. Queremos que nuestros productores y emprendedores crezcan, y que Piray sea un lugar más sustentable para todos.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Vinculación e incorporación tecnológica.</strong></li>
+                <li><strong>Circuito comercial para productores locales.</strong></li>
+                <li><strong>Apoyo y asesoramiento a emprendimientos.</strong></li>
+                <li><strong>Reducción impositiva local.</strong></li>
+                <li><strong>Simplificación de habilitaciones comerciales.</strong></li>
+                <li><strong>Educación y conciencia ambiental.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Acción Social Details -->
+        <div id="social-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-social"><i class="fas fa-hand-holding-heart mr-2"></i>Acción Social</h3>
+            <p class="text-gray-600 mb-4">Nuestro compromiso es estar cerca de quienes más lo necesitan. Organizamos el área para dar una asistencia permanente y de calidad, con equipos profesionales y programas integrales.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Organización del área</strong> con herramientas y capacitación.</li>
+                <li><strong>Equipo técnico interdisciplinario.</strong></li>
+                <li><strong>Asistencia permanente</strong> a personas en situación de vulnerabilidad.</li>
+                <li><strong>Espacio de primera infancia.</strong></li>
+                <li><strong>Atención integral a la tercera edad.</strong></li>
+                <li><strong>Coordinación de políticas sociales.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Deportes Details -->
+        <div id="deportes-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-deportes"><i class="fas fa-futbol mr-2"></i>Deportes</h3>
+            <p class="text-gray-600 mb-4">Creemos que el deporte es un pilar de la comunidad. Queremos que los clubes y polideportivos sean espacios de encuentro y contención para todos, con más y mejores actividades.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Puesta en valor de polideportivos y clubes.</strong></li>
+                <li><strong>Programas de financiamiento.</strong></li>
+                <li><strong>Escuela de iniciación deportiva (hasta 12 años).</strong></li>
+                <li><strong>Centro de educación física inclusivo.</strong></li>
+                <li><strong>CEFE para personas con diferentes capacidades.</strong></li>
+                <li><strong>Impulso al fútbol femenino.</strong></li>
+                <li><strong>Ligas y campeonatos.</strong></li>
+                <li><strong>Colonias de vacaciones.</strong></li>
+                <li><strong>Fiesta del deporte.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Juventud Details -->
+        <div id="juventud-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-juventud"><i class="fas fa-user-graduate mr-2"></i>Juventud</h3>
+            <p class="text-gray-600 mb-4">Los jóvenes son el futuro de Piray. Queremos darles las herramientas y los espacios para que se desarrollen, formen y encuentren su lugar en nuestra comunidad.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Concejo Municipal de la Juventud.</strong></li>
+                <li><strong>Cooperativa de Jóvenes.</strong></li>
+                <li><strong>Fortalecer la Estudiantina.</strong></li>
+                <li><strong>Créditos para emprendedores jóvenes.</strong></li>
+                <li><strong>Acompañamiento a la terminalidad educativa.</strong></li>
+                <li><strong>Programa “Mi primer comercio/emprendimiento”.</strong></li>
+            </ul>
+        </div>
+
+        <!-- KM 18 Details -->
+        <div id="km18-detalles">
+            <h3 class="text-2xl font-bold text-juntos mb-3" id="modal-title-km18"><i class="fas fa-map-marked-alt mr-2"></i>KM 18</h3>
+            <p class="text-gray-600 mb-4">El KM 18 es parte de nuestra identidad. Conocemos las necesidades de los vecinos y tenemos propuestas concretas para que la zona tenga los servicios y la atención que merece.</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li><strong>Delegación municipal en el Km 18.</strong></li>
+                <li><strong>Mejoramiento de espacios públicos.</strong></li>
+                <li><strong>Servicios básicos:</strong> agua, iluminación y calles.</li>
+                <li><strong>Ordenamiento y mantenimiento del polideportivo.</strong></li>
+                <li><strong>Trabajo con productores y cooperativas.</strong></li>
+                <li><strong>Canchas Barrio Santa Teresa y Km 19.</strong></li>
+                <li><strong>Mejora del transporte público.</strong></li>
+                <li><strong>Niveles de enseñanza para la Escuela N.º 677</strong> y servicio de portería.</li>
+                <li><strong>Mejoras CAPS Santa Teresa.</strong></li>
+                <li><strong>CAPS Km 18 24hs</strong>, refuerzo médico, equipamiento y ambulancia propia.</li>
+                <li><strong>Destacamento policial Km 18</strong> con personal e infraestructura.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Candidatos Section -->
+    <section id="candidatos" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">Nuestro Equipo</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Conocé a quienes lideran nuestro proyecto vecinal. Un equipo de personas comprometidas con el trabajo honesto y cercano para transformar Puerto Piray.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <!-- Candidato Principal Card -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center md:col-span-1">
+                    <div class="w-40 h-40 mx-auto rounded-full overflow-hidden mb-4">
+                        <img src="img/conejo-fernandez.png" alt="Foto de Horacio Fernández" class="w-full h-full object-cover" width="160" height="160" loading="lazy" decoding="async">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Horacio Fernández</h3>
+                    <p class="text-juntos text-xl font-semibold mb-4">Candidato a Intendente</p>
+                    <div class="flex justify-center space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-juntos" aria-label="Facebook de Horacio Fernández"><i class="fab fa-facebook-square fa-2x"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-juntos" aria-label="Instagram de Horacio Fernández"><i class="fab fa-instagram-square fa-2x"></i></a>
+                    </div>
+                </div>
+
+                <!-- Concejal 1 Card -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
+                        <img src="img/remigio-smith.png" alt="Foto de Remigio Smith" class="w-full h-full object-cover" width="128" height="128" loading="lazy" decoding="async">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Remigio Smith</h3>
+                    <p class="text-juntos font-semibold mb-4">Presidente del Concejo Deliberante</p>
+                    <div class="flex justify-center space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-juntos" aria-label="Facebook de Remigio Smith"><i class="fab fa-facebook-square fa-2x"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-juntos" aria-label="Instagram de Remigio Smith"><i class="fab fa-instagram-square fa-2x"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Concejal 2 Card -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
+                        <img src="img/elizabeth-mercado.png" alt="Foto de Elizabeth Mercado" class="w-full h-full object-cover" width="128" height="128" loading="lazy" decoding="async">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Elizabeth Mercado</h3>
+                    <p class="text-juntos font-semibold mb-4">Concejal</p>
+                    <div class="flex justify-center space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-juntos" aria-label="Facebook de Elizabeth Mercado"><i class="fab fa-facebook-square fa-2x"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-juntos" aria-label="Instagram de Elizabeth Mercado"><i class="fab fa-instagram-square fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyectos Section -->
+    <section id="proyectos" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">Proyectos en Marcha</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Queremos que sepas en qué estamos trabajando y el estado de cada iniciativa. Acá podés ver los proyectos que ya se aprobaron y los que están en gestión.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Proyectos Aprobados -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold text-green-600 mb-4"><i class="fas fa-check-circle mr-2"></i>Proyectos Aprobados</h3>
+                    <ul class="space-y-4">
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de limpieza, mantenimiento y desmalezado de paradas de colectivo</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: Aprobado</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de reparación, mantenimiento de caminos y arreglo y ampliación de la red de alumbrado público del KM 18</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: En ejecución</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Ordenanza "Prohibición estacionamiento lado derecho calle Facundo Quiroga"</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: Aprobado</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de desmalezado márgenes de la calle M.C. Saavedra y AV. República Argentina</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: Aprobado</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de acondicionamiento de espacio físico en el cementerio local para futuras sepulturas</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: Aprobado</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de finalización de obras para la mejora de condiciones de habitabilidad de la vecina F.C.</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: En ejecución</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Proyectos Presentados -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold text-blue-600 mb-4"><i class="fas fa-paper-plane mr-2"></i>Proyectos Presentados</h3>
+                    <ul class="space-y-4">
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de respuesta al pedido de presentación del balance financiero del año 2024</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: En comisión</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Solicitud de asistencia urgente e inmediata a vecina de extrema vulnerabilidad</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: En comisión</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Beneplácito por la conformación del C.E del ISIPP</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: En comisión</span>
+                        </li>
+                        <li class="border-b pb-4">
+                            <p class="font-semibold text-lg"><strong>Beneplácito por la conformación de la 9na. comisión directiva de la ACEPP</strong></p>
+                            <p class="text-sm text-gray-500">20/05/2025</p>
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-2">Estado: En comisión</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Together with the people section (formerly community section) -->
+    <section id="comunidad" class="py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-10 text-juntos">Junto a los Vecinos</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+                Nuestro compromiso es con la gente, el trabajo en equipo y la solidaridad. Aquí te mostramos algunas de las acciones donde estamos cerca de vos, conectándonos y haciéndonos más fuertes como pueblo.
+            </p>
+            <div class="relative max-w-4xl mx-auto">
+                <div class="carousel-container" aria-live="polite">
+                    <div class="carousel-track flex">
+                        <div class="carousel-slide min-w-full">
+                            <p class="text-gray-800 font-semibold text-lg mb-4">
+                                El candidato a intendente Horacio Fernández entrega camisetas a los vecinos del barrio Badaraco.
+                            </p>
+                            <img src="img/juntos-podemos-camisetas.png" alt="Horacio Fernández entregando camisetas" width="800" height="600" loading="lazy" decoding="async">
+                        </div>
+                        <div class="carousel-slide min-w-full">
+                            <p class="text-gray-800 font-semibold text-lg mb-4">
+                                Los concejales Remigio Smith y Elizabeth Mercado entregan recursos a estudiantes terciarios.
+                            </p>
+                            <img src="img/juntos-podemos-concejales.png" alt="Remigio Smith y Elizabeth Mercado entregan recursos a estudiantes" width="800" height="600" loading="lazy" decoding="async">
+                        </div>
+                        <div class="carousel-slide min-w-full">
+                            <p class="text-gray-800 font-semibold text-lg mb-4">
+                                Voluntarios del partido recorren los barrios para escuchar las propuestas de los vecinos.
+                            </p>
+                            <img src="img/juntos-podemos-voluntarios.png" alt="Voluntarios de Juntos Podemos escuchan a los vecinos" width="800" height="600" loading="lazy" decoding="async">
+                        </div>
+                    </div>
+                    <button class="carousel-button carousel-button-left" aria-label="Anterior" onclick="moveCarousel(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-button carousel-button-right" aria-label="Siguiente" onclick="moveCarousel(1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transparencia Section -->
+    <section id="transparencia" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">Transparencia 1 clic</h2>
+        <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Estamos comprometidos con la transparencia total, para que sepas en qué se usa cada peso. La información es de todos, sin vueltas ni demoras. Por eso, todo está acá, a un solo clic.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <a href="#" class="bg-juntos text-white p-4 rounded-lg text-center font-semibold hover:bg-[#c0302b]">Ver Balance</a>
+                <a href="#" class="bg-juntos text-white p-4 rounded-lg text-center font-semibold hover:bg-[#c0302b]">Descargar Presupuesto</a>
+                <a href="#" class="bg-juntos text-white p-4 rounded-lg text-center font-semibold hover:bg-[#c0302b]">Ver Proyectos con estado</a>
+                <a href="#" class="bg-juntos text-white p-4 rounded-lg text-center font-semibold hover:bg-[#c0302b]">Seguir mi reclamo</a>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold mb-3">Documentos para descargar</h3>
+                <ul class="list-disc list-inside text-gray-600">
+                    <li>Balance 2024</li>
+                    <li>Presupuesto y Ordenanzas</li>
+                    <li>Digesto y Actas HCD</li>
+                    <li>Reportes trimestrales</li>
+                </ul>
+                <h3 class="text-xl font-bold mt-6 mb-3">Seguimiento de reclamos</h3>
+                <p class="text-gray-600">Si tenés una inquietud o sugerencia, podés hacer un seguimiento de tu pedido. Cuando lo envíes, recibirás un número de seguimiento. Te garantizamos una respuesta en un plazo máximo de <strong>[SLA_HORAS]</strong> horas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Novedades Section -->
+    <section id="novedades" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">Novedades y Prensa</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Novedad 1 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-lg mb-2">Operativo de Salud en el Barrio [NOMBRE_BARRIO]</h4>
+                    <p class="text-gray-600 text-sm">El equipo de Juntos Podemos llevó servicios de atención primaria y asesoramiento a más de [NÚMERO] familias del barrio.</p>
+                </div>
+                <!-- Novedad 2 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-lg mb-2">Reunión con vecinos del KM 18</h4>
+                    <p class="text-gray-600 text-sm">Horacio Fernández se reunió con referentes del barrio para escuchar sus inquietudes y planificar acciones de mejora de los servicios.</p>
+                </div>
+                <!-- Novedad 3 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-lg mb-2">Avance de proyecto en [NOMBRE_PROYECTO]</h4>
+                    <p class="text-gray-600 text-sm">El proyecto de [TÍTULO DEL PROYECTO] ya se encuentra en estado de ejecución, luego de su aprobación en el HCD.</p>
+                </div>
+                <!-- Novedad 4 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-lg mb-2">Apoyo a la liga de [NOMBRE_LIGA]</h4>
+                    <p class="text-gray-600 text-sm">Colaboramos con la organización de la [NOMBRE_LIGA] para que los chicos puedan seguir disfrutando del deporte en su barrio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sumate Section -->
+    <section id="sumate" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">¡Sumate!</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-xl mx-auto">En Juntos Podemos, tu voz y tu acción son fundamentales. Hay muchas formas de sumarte y hacer la diferencia. ¡Tu participación es clave para que las cosas cambien!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <a href="#voluntariado-modal" class="group block bg-white p-6 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <i class="fas fa-hand-holding-heart text-juntos text-4xl mb-3"></i>
+                    <h4 class="font-bold text-lg">Voluntariado</h4>
+                    <p class="text-gray-600 text-sm">Ayudá en nuestros operativos y eventos.</p>
+                </a>
+                <div class="bg-white p-6 rounded-lg text-center shadow-md">
+                    <i class="fas fa-search-plus text-juntos text-4xl mb-3"></i>
+                    <h4 class="font-bold text-lg">Veeduría de proyectos</h4>
+                    <p class="text-gray-600 text-sm">Hacé un seguimiento y fiscalizá la ejecución de nuestros proyectos.</p>
+                </div>
+                <a href="#proponer-proyecto-modal" class="group block bg-white p-6 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                    <i class="fas fa-lightbulb text-juntos text-4xl mb-3"></i>
+                    <h4 class="font-bold text-lg">Proponé un proyecto</h4>
+                    <p class="text-gray-600 text-sm">Si tenés una idea para tu barrio, contanos.</p>
+                </a>
+                <div class="bg-white p-6 rounded-lg text-center shadow-md">
+                    <i class="fab fa-whatsapp text-juntos text-4xl mb-3"></i>
+                    <h4 class="font-bold text-lg">WhatsApp directo</h4>
+                    <p class="text-gray-600 text-sm">Escribinos para cualquier consulta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-juntos">Contacto</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto text-center">
+                <p class="text-lg font-semibold mb-4">Te escuchamos. Tu voz es importante.</p>
+                <p class="text-gray-600 mb-2"><i class="fab fa-whatsapp mr-2 text-green-500"></i><strong>WhatsApp:</strong> [NÚMERO_DE_WHATSAPP]</p>
+                <p class="text-gray-600 mb-2"><i class="fas fa-envelope mr-2 text-blue-500"></i><strong>Email:</strong> [EMAIL_DEL_PARTIDO]</p>
+                <p class="text-gray-600 mb-2"><i class="fas fa-clock mr-2 text-gray-500"></i><strong>Horario de atención:</strong> De lunes a viernes, de [HORA_INICIO] a [HORA_FIN]</p>
+                <p class="text-gray-600 text-sm mt-4">Te garantizamos una respuesta a tu consulta en un plazo máximo de <strong>[SLA_HORAS]</strong> horas.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- The Modal Overlay and Content (accesible) -->
+<div id="proposal-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+        <button class="modal-close" aria-label="Cerrar modal">&times;</button>
+        <div id="modal-body">
+            <!-- Content will be injected here -->
+        </div>
+    </div>
+</div>
+
+<footer class="bg-gray-800 text-white py-6 text-center text-sm">
+    <div class="container mx-auto px-4">
+        <p>&copy; [AÑO]. Juntos Podemos · Puerto Piray. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<div class="hidden-modal-content" style="display:none;">
+    <!-- Modal for Voluntariado -->
+    <div id="voluntariado-modal">
+        <h3 class="text-2xl font-bold text-juntos mb-4">Sumate como Voluntario</h3>
+        <p class="text-gray-600 mb-4">¡Tu ayuda es clave para nosotros! Dejanos tus datos para que podamos contactarte y organizar juntos los próximos operativos y eventos en los barrios.</p>
+        <form id="voluntariado-form" class="space-y-4">
+            <div>
+                <label for="vol-nombre" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+                <input type="text" id="vol-nombre" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500" required>
+            </div>
+            <div>
+                <label for="vol-email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="vol-email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500" required>
+            </div>
+            <div>
+                <label for="vol-tel" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                <input type="tel" id="vol-tel" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500" required>
+            </div>
+            <div>
+                <label for="vol-genero" class="block text-sm font-medium text-gray-700">Género</label>
+                <select id="vol-genero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500">
+                    <option value="">Seleccionar</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div>
+                <label for="vol-edad" class="block text-sm font-medium text-gray-700">Rango de Edad</label>
+                <select id="vol-edad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500">
+                    <option value="">Seleccionar</option>
+                    <option value="18-25">18 - 25</option>
+                    <option value="26-40">26 - 40</option>
+                    <option value="41-60">41 - 60</option>
+                    <option value="60+">Más de 60</option>
+                </select>
+            </div>
+            <button type="submit" class="cta-btn-juntos w-full">Inscribirme</button>
+            <p id="voluntariado-msg" class="text-center text-sm font-semibold mt-2 hidden"></p>
+        </form>
+    </div>
+
+    <!-- Modal for Proponer un Proyecto -->
+    <div id="proponer-proyecto-modal">
+        <h3 class="text-2xl font-bold text-juntos mb-4">Proponé tu Proyecto</h3>
+        <p class="text-gray-600 mb-4">Si tenés una idea para mejorar tu barrio o la comunidad, contanos. Vamos a analizar tu propuesta y te daremos un número de seguimiento.</p>
+        <form id="proyecto-form" class="space-y-4">
+            <div>
+                <label for="pro-nombre" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+                <input type="text" id="pro-nombre" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500" required>
+            </div>
+            <div>
+                <label for="pro-email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="pro-email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500" required>
+            </div>
+            <div>
+                <label for="pro-propuesta" class="block text-sm font-medium text-gray-700">Tu propuesta</label>
+                <textarea id="pro-propuesta" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500" required></textarea>
+            </div>
+            <button type="submit" class="cta-btn-juntos w-full">Enviar Proyecto</button>
+            <p id="proyecto-msg" class="text-center text-sm font-semibold mt-2 hidden"></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // ===== Modal accesible =====
+        const modal = document.getElementById('proposal-modal');
+        const modalContent = modal.querySelector('.modal-content');
+        const modalBody = document.getElementById('modal-body');
+        const closeBtn = document.querySelector('.modal-close');
+        const openModalBtns = document.querySelectorAll('.open-modal-btn');
+        let lastTrigger = null;
+
+        function openModalWithContent(el) {
+            const targetId = el.getAttribute('href').substring(1);
+            const contentToDisplay = document.getElementById(targetId);
+            if (!contentToDisplay) return;
+            lastTrigger = el;
+            modalBody.innerHTML = contentToDisplay.innerHTML;
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            modalContent.setAttribute('aria-labelledby', 'modal-title');
+            // Si el contenido tiene H3, úsalo como título
+            const h3 = modalBody.querySelector('h3');
+            if (h3) h3.id = 'modal-title';
+            // Foco al modal
+            modalContent.focus();
+            document.addEventListener('keydown', trapKeys);
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.removeEventListener('keydown', trapKeys);
+            if (lastTrigger) lastTrigger.focus();
+        }
+
+        function trapKeys(e) {
+            // Cerrar con Esc
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeModal();
+                return;
+            }
+            // Focus trap con Tab
+            if (e.key === 'Tab' && modal.classList.contains('active')) {
+                const focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault(); last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault(); first.focus();
+                }
+            }
+        }
+
+        openModalBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => { e.preventDefault(); openModalWithContent(e.currentTarget); });
+        });
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // ===== Carousel =====
+        const carouselTrack = document.querySelector('.carousel-track');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        window.moveCarousel = (direction) => {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            carouselTrack.style.transform = `translateX(${-currentSlide * 100}%)`;
+        };
+
+        // ===== Formularios (mensaje local) =====
+        const voluntariadoForm = document.getElementById('voluntariado-form');
+        if (voluntariadoForm) {
+            voluntariadoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const msg = document.getElementById('voluntariado-msg');
+                msg.textContent = '¡Gracias por inscribirte! Nos pondremos en contacto contigo pronto. 🎉';
+                msg.classList.remove('hidden');
+                voluntariadoForm.reset();
+            });
+        }
+        const proyectoForm = document.getElementById('proyecto-form');
+        if (proyectoForm) {
+            proyectoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const msg = document.getElementById('proyecto-msg');
+                const trackingNumber = Math.floor(Math.random() * 100000);
+                msg.textContent = `¡Gracias por tu propuesta! Tu número de seguimiento es: ${trackingNumber}. Te contactaremos pronto.`;
+                msg.classList.remove('hidden');
+                proyectoForm.reset();
+            });
+        }
+
+        // ===== Menú móvil accesible =====
+        const menuButton = document.getElementById('menu-button');
+        const menuDropdown = document.getElementById('menu-dropdown');
+        function toggleMenu(show){
+            const visible = (show !== undefined) ? show : menuDropdown.style.display !== 'block';
+            menuDropdown.style.display = visible ? 'block' : 'none';
+            menuButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
+        }
+        menuButton.addEventListener('click', () => toggleMenu());
+        document.addEventListener('click', (e) => {
+            if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) toggleMenu(false);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleMenu(false);
+        });
+
+        // ===== Footer: año dinámico sin tocar copy =====
+        const footerP = document.querySelector('footer p');
+        if (footerP) footerP.innerHTML = footerP.innerHTML.replace('[AÑO]', new Date().getFullYear());
+    });
+</script>
+
+</body>
+</html>
