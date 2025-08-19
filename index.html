@@ -75,6 +75,38 @@
         }
         .dropdown-menu a { display: block; padding: 0.75rem 1rem; color: #2c3e50; transition: background-color 0.2s; }
         .dropdown-menu a:hover { background-color: #f1f1f1; }
+
+        /* ====== PARCHE HERO (imagen detrás del texto en el marco amarillo) ====== */
+        .hero-frame{
+          position: relative;
+          overflow: hidden;
+          border: 12px solid #ffd92f;   /* amarillo del marco */
+          border-radius: 12px;
+          min-height: 420px;            /* alto mínimo en mobile */
+        }
+        @media (min-width: 768px){
+          .hero-frame{ border-width: 16px; }
+        }
+        @media (min-width: 1024px){
+          .hero-frame{ min-height: 560px; } /* alto en desktop */
+        }
+        .hero-bg{
+          position: absolute;
+          inset: 0;
+          background: url('img/imagen-principal.jpg') center/cover no-repeat;
+          z-index: 0;
+        }
+        .hero-overlay{
+          position: absolute;
+          inset: 0;
+          background: rgba(0,0,0,.25);
+          z-index: 0;
+        }
+        .hero-content{
+          position: relative;
+          z-index: 1;
+        }
+        /* ====== FIN PARCHE HERO ====== */
     </style>
 </head>
 <body class="antialiased">
@@ -113,23 +145,28 @@
     </div>
 </nav>
 
-<!-- Header Section -->
-<header id="home" class="bg-juntos text-white py-16 md:py-24 text-center">
-    <div class="container mx-auto px-4">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
-            Juntos por un <br class="md:hidden">Puerto Piray más seguro, con mejor salud, <br class="md:hidden">trabajo y obras para cada barrio.
+<!-- Header Section (PARCHEADO) -->
+<header id="home" class="bg-juntos text-white py-8 md:py-12">
+  <div class="container mx-auto px-4">
+    <div class="hero-frame max-w-6xl mx-auto">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="hero-content text-center py-10 md:py-16">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          Juntos por un <br class="md:hidden">Puerto Piray más seguro, con mejor salud, <br class="md:hidden">trabajo y obras para cada barrio.
         </h1>
-        <p class="text-lg sm:text-xl max-w-2xl mx-auto mb-6">
-            En Juntos Podemos, somos vecinos como vos. Creemos en la transparencia y en el trabajo diario, ese que se ve y se siente en cada rincón de Piray. Desde el centro hasta el KM 18, nuestro compromiso es simple: acercar soluciones reales a las necesidades de la gente. Te invitamos a conocer nuestras propuestas, seguir nuestros proyectos y sumarte a la acción.
+        <p class="text-lg sm:text-xl max-w-2xl mx-auto mb-8">
+          En Juntos Podemos, somos vecinos como vos. Creemos en la transparencia y en el trabajo diario, ese que se ve y se siente en cada rincón de Piray. Desde el centro hasta el KM 18, nuestro compromiso es simple: acercar soluciones reales a las necesidades de la gente. Te invitamos a conocer nuestras propuestas, seguir nuestros proyectos y sumarte a la acción.
         </p>
-        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <a href="#propuestas" class="cta-btn-juntos">Ver Propuestas</a>
-            <a href="#transparencia" class="cta-btn-juntos">Transparencia 1 clic</a>
-            <a href="#sumate" class="cta-btn-juntos">¡Sumate!</a>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <a href="#propuestas" class="cta-btn-juntos">Ver Propuestas</a>
+          <a href="#transparencia" class="cta-btn-juntos">Transparencia 1 clic</a>
+          <a href="#sumate" class="cta-btn-juntos">¡Sumate!</a>
         </div>
-        <!-- Image for Hero Section -->
-        <img src="img/imagen-principal.jpg" alt="Juntos Podemos Puerto Piray" class="w-full max-w-4xl mx-auto rounded-lg shadow-xl mt-8">
+      </div>
     </div>
+  </div>
 </header>
 
 <main class="py-12">
@@ -173,7 +210,7 @@
                 </a>
                 
                 <!-- Obras Card -->
-                <a href="#obras-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 open-modal-btn">
+                <a href="#obras-detalles" class="group block p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duración-300 open-modal-btn">
                     <h3 class="text-2xl font-bold text-juntos mb-3"><i class="fas fa-tools mr-2"></i>Obras y Servicios</h3>
                     <p class="text-gray-600">
                         El progreso se ve en las calles, en la iluminación, en los servicios básicos. Nuestro plan de obras busca mejorar la calidad de vida de cada vecino.
